@@ -1,7 +1,7 @@
 var express = require('express');
 
 var app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 
 //for Heroku usage
 app.use(function(req, res, next){
