@@ -1,3 +1,5 @@
+'use strict'
+
 const schemas = require('./app/data/schemas');
 const mockapi = require('./app/data/mockapi');
 
