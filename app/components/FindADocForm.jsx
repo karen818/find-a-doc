@@ -1,13 +1,15 @@
 var React = require('react');
+var zippo = require('zippo');
 
 var FindADocForm = React.createClass({
+
   handleSubmit: function(e){
     e.preventDefault();
     var searchZip = this.refs.searchZip.value;
 
-    if(searchZip.length > 0){
+    if(zippo.validate(searchZip)){
       this.refs.searchZip.value = '';
-      this.props.onEnterZip(searchZip);
+      this.props.onSearchZip(searchZip);
     } else {
       this.refs.searchZip.focus();
     }
@@ -16,7 +18,7 @@ var FindADocForm = React.createClass({
     return(
       <div>
         <form onSubmit={this.handleSubmit} ref="form" className="findadoc-form">
-          <input type='text' ref='searchZip' placeholder='Enter your zip code'/>
+          <input type='number' ref='searchZip' placeholder='Enter your 5 digit zip code'/>
           <button className='button expanded'>Search</button>
         </form>
       </div>
