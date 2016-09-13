@@ -1,7 +1,7 @@
 'use strict'
-const zipCountiesResponse = require('zipCountiesResponse');
-const findProvidersResponse = require('findProvidersResponse');
-const findPlansResponse = require('findPlansResponse');
+const zipCountiesResponse = require('./zipCountiesResponse')
+const findProvidersResponse = require('./findProvidersResponse')
+const findPlansResponse = require('./findPlansResponse')
 
 
 module.exports ={

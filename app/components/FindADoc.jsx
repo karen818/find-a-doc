@@ -1,24 +1,37 @@
 var React = require('react');
 var FindADocForm = require('FindADocForm');
 var ZipSearchMessage = require('ZipSearchMessage');
-// var zipCountiesResponse = require('zipCountiesResponse');
-// var mockapi = require('mockapi');
+var findFips = require('findFips');
+var findPlans = require('findPlans');
 
 var FindADoc = React.createClass({
   getInitialState: function () {
     return {
-      searchZip: '78749',
+      searchZip: '',
       fipsCode: ''
     }
   },
   handleSearchZip: function (searchZip) {
+    var that = this;
     this.setState({
       searchZip: searchZip
     });
-    console.log(searchZip);
+    findFips.getFipsCode(searchZip).then(function(fipsCode){
+      that.setState({
+        searchZip: searchZip,
+        fipsCode: fipsCode
+      });
+      console.log(fipsCode);
+      findPlans.getPlans(searchZip, fipsCode);
+    }, function(e){
+      that.setState({
+        errorMessage: e.message
+      });
+    });
+
   },
   render: function() {
-    var {searchZip} = this.state;
+    var {searchZip, fipsCode} = this.state;
 
     function renderMessage(){
       return <ZipSearchMessage searchZip={searchZip}/>

@@ -14,6 +14,9 @@ app.use(function(req, res, next){
 
 app.use(express.static('public'));
 
+//import the server routes, pass in app and api
+require('./routes');
+
 app.listen(PORT, function(){
     console.log('Express server is up on port ' + PORT);
 });
