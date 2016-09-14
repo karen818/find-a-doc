@@ -5,8 +5,6 @@ var findFips = require('findFips');
 const KIND_HEALTH_GETPLANS_URL = 'http://api.kindhealth.co/findPlans/';
 const MARKET = "individual";
 
-// fcd81178da8bd33a003f4c51d5cb2fe6
-
 module.exports = {
   getPlans: function(zipCode, fipsCode){
     return axios.post(KIND_HEALTH_GETPLANS_URL, {
@@ -15,11 +13,19 @@ module.exports = {
       market: MARKET
     }).then(function(res){
       var plansArray = [];
-      var plans = res.data.plans;
-      plans.forEach(function(plan){
+      var plansRes = res.data.plans;
+      plansRes.forEach(function(plan){
         plansArray.push(plan);
       });
-      console.log(plansArray[0]);
+
+      var carriers = [];
+      for (var i = 0; i < plansArray.length; i++) {
+        carriers.push (plansArray[i].carrier_name, plansArray[i].hios_issuer_id, plansArray[i].name);
+      };
+      console.log(carriers);
+
+
+
       return plansArray;
     }).catch(function(err){
       console.log(err);

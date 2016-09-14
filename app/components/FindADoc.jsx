@@ -8,7 +8,9 @@ var FindADoc = React.createClass({
   getInitialState: function () {
     return {
       searchZip: '',
-      fipsCode: ''
+      fipsCode: '',
+      carrierName: '',
+      hiosIssuerId: ''
     }
   },
   handleSearchZip: function (searchZip) {
@@ -22,7 +24,7 @@ var FindADoc = React.createClass({
         fipsCode: fipsCode
       });
       findPlans.getPlans(searchZip, fipsCode).then(function(plans){
-        console.log(plans);
+        console.log(plans[0].carrier_name);
       });
     }, function(e){
       that.setState({

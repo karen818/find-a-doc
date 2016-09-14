@@ -25,7 +25,8 @@ var FindADocForm = React.createClass({
         <form onSubmit={this.handleSubmit} ref="form" className="findadoc-form">
           <label>1. Zip Code</label>
           <input type='number' ref='searchZip' placeholder='Enter your 5 digit zip code'/>
-          <label>2. Choose Insurance Plan</label>
+          <label>2. Choose Insurance Carrier</label>
+          <label>3. Choose Insurance Plan</label>
           <PlansList/>
           <button className='button expanded'>Search for Doctors</button>
         </form>
