@@ -21,8 +21,9 @@ var FindADoc = React.createClass({
         searchZip: searchZip,
         fipsCode: fipsCode
       });
-      console.log(fipsCode);
-      findPlans.getPlans(searchZip, fipsCode);
+      findPlans.getPlans(searchZip, fipsCode).then(function(plans){
+        console.log(plans);
+      });
     }, function(e){
       that.setState({
         errorMessage: e.message

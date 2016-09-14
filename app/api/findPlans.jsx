@@ -14,7 +14,13 @@ module.exports = {
       fips_code: fipsCode,
       market: MARKET
     }).then(function(res){
-      console.log(res);
+      var plansArray = [];
+      var plans = res.data.plans;
+      plans.forEach(function(plan){
+        plansArray.push(plan);
+      });
+      console.log(plansArray[0]);
+      return plansArray;
     }).catch(function(err){
       console.log(err);
     });
