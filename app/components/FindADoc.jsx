@@ -10,7 +10,16 @@ var FindADoc = React.createClass({
       searchZip: '',
       fipsCode: '',
       carriersList: '',
-      hiosIssuerId: ''
+      hiosIssuerId: '',
+      plansList: '',
+      carrierInputVisible: false,
+      planInputVisible: false,
+      submitVisible: false
+    }
+  },
+  getDefaultProps: function () {
+    return {
+      visible: false
     }
   },
   handleSearchZip: function (searchZip) {

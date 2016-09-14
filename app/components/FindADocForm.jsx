@@ -2,6 +2,7 @@ var React = require('react');
 var zippo = require('zippo');
 
 var ProvidersList = require('ProvidersList');
+var CarriersList = require('CarriersList');
 var PlansList = require('PlansList');
 var findPlans = require('findPlans');
 
@@ -28,8 +29,9 @@ var FindADocForm = React.createClass({
           <input type='number' ref='searchZip' placeholder='Enter your 5 digit zip code'/>
           <button className='button expanded' onClick={this.handleEnterZip}>Enter Zip Code</button>
           <label>2. Choose Insurance Carrier</label>
-          <PlansList />
+          <CarriersList />
           <label>3. Choose Insurance Plan</label>
+          <PlansList />
 
           <button className='button expanded'>Search for Doctors</button>
         </form>
