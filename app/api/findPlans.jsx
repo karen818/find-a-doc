@@ -30,15 +30,15 @@ module.exports = {
         });
       };
       // carriers is now an array of objects
-      console.log(carriers);
 
       var plansByCarrier = _.groupBy(carriers, function(n){
         return n.carrierName;
       });
 
-      console.log(plansByCarrier);
+      //plansByCarrier is now an object of carriers/plans
 
-      return carriers;
+
+      return plansByCarrier;
     }).catch(function(err){
       console.log(err);
     });

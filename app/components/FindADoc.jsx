@@ -23,8 +23,16 @@ var FindADoc = React.createClass({
         searchZip: searchZip,
         fipsCode: fipsCode
       });
-      findPlans.getPlans(searchZip, fipsCode).then(function(carriers){
-        console.log(carriers[26]);
+      findPlans.getPlans(searchZip, fipsCode).then(function(plansByCarrier){
+        var carriersList = [];
+
+        for (var index in plansByCarrier){
+          carriersList.push(index)
+        };
+        console.log(carriersList);
+        that.setState({
+          
+        });
       });
     }, function(e){
       that.setState({
