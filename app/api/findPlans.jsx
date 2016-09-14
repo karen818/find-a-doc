@@ -36,7 +36,7 @@ module.exports = {
       });
 
       //plansByCarrier is now an object of carriers/plans
-
+      console.log(plansByCarrier);
 
       return plansByCarrier;
     }).catch(function(err){

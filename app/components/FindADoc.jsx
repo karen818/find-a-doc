@@ -9,7 +9,7 @@ var FindADoc = React.createClass({
     return {
       searchZip: '',
       fipsCode: '',
-      carrierName: '',
+      carriersList: '',
       hiosIssuerId: ''
     }
   },
@@ -24,14 +24,23 @@ var FindADoc = React.createClass({
         fipsCode: fipsCode
       });
       findPlans.getPlans(searchZip, fipsCode).then(function(plansByCarrier){
+
         var carriersList = [];
 
-        for (var index in plansByCarrier){
-          carriersList.push(index)
+        for (var carrier in plansByCarrier){
+          carriersList.push(carrier)
         };
         console.log(carriersList);
+
+        var plansList = [];
+
+        for (var carrier in plansByCarrier) {
+          plansList.push
+        }
+
+
         that.setState({
-          
+          carriersList: carriersList
         });
       });
     }, function(e){
