@@ -3,6 +3,8 @@ var FindADocForm = require('FindADocForm');
 var ZipSearchMessage = require('ZipSearchMessage');
 var findFips = require('findFips');
 var findPlans = require('findPlans');
+var _ = require('lodash');
+// var GetCarriersAndPlans = require('GetCarriersAndPlans');
 
 var FindADoc = React.createClass({
   getInitialState: function () {
@@ -10,16 +12,10 @@ var FindADoc = React.createClass({
       searchZip: '',
       fipsCode: '',
       carriersList: '',
+      plansByCarrier: '',
       hiosIssuerId: '',
       plansList: '',
-      carrierInputVisible: false,
-      planInputVisible: false,
-      submitVisible: false
-    }
-  },
-  getDefaultProps: function () {
-    return {
-      visible: false
+      inputVisible: false
     }
   },
   handleSearchZip: function (searchZip) {
@@ -30,26 +26,30 @@ var FindADoc = React.createClass({
     findFips.getFipsCode(searchZip).then(function(fipsCode){
       that.setState({
         searchZip: searchZip,
-        fipsCode: fipsCode
+        fipsCode: fipsCode,
+        inputVisible: true
       });
-      findPlans.getPlans(searchZip, fipsCode).then(function(plansByCarrier){
+      findPlans.getPlans(searchZip, fipsCode).then(function(plansArray){
 
+
+        var plansByCarrier = _.groupBy(plansArray, function(obj){
+          return obj.carrierName;
+        });
+
+        console.log(plansByCarrier);
+
+        //plansByCarrier is now an object of carriers/plans
         var carriersList = [];
 
-        for (var carrier in plansByCarrier){
-          carriersList.push(carrier)
-        };
-        console.log(carriersList);
-
-        var plansList = [];
-
-        for (var carrier in plansByCarrier) {
-          plansList.push
-        }
-
+        _.forEach(plansByCarrier, function(value, key){
+          carriersList.push(key);
+        });
+        console.log("Carriers List: " + carriersList);
 
         that.setState({
-          carriersList: carriersList
+          plansByCarrier: plansByCarrier,
+          carriersList: carriersList,
+          inputVisible: true
         });
       });
     }, function(e){
@@ -60,18 +60,28 @@ var FindADoc = React.createClass({
 
   },
   render: function() {
-    var {searchZip, fipsCode} = this.state;
+    var {searchZip, fipsCode, carriersList, inputVisible} = this.state;
 
-    function renderMessage(){
-      return <ZipSearchMessage searchZip={searchZip}/>
-    }
+    var renderList = function(array){
+      return (
+        _.map(array, function(item){
+          return <option>{item}</option>;
+        })
+      );
+    };
+
+
+
+
     return (
       <div>
         <div className='row'>
           <div className='columns small-11 medium-6 large-4 small-centered'>
             <h3 className='page-title'>Find A Doctor</h3>
             <FindADocForm onSearchZip={this.handleSearchZip} />
-            {renderMessage()}
+            <select>
+              {renderList(carriersList)}
+            </select>
           </div>
         </div>
       </div>

@@ -14,31 +14,23 @@ module.exports = {
       fips_code: fipsCode,
       market: MARKET
     }).then(function(res){
-      var plansArray = [];
+
       var plansResponse = res.data.plans;
-      plansResponse.forEach(function(plan){
-        plansArray.push(plan);
-      });
 
-      var carriers = [];
+      var plansArray = [];
 
-      for (var i = 0; i < plansArray.length; i++) {
-        carriers.push ({
-          carrierName: plansArray[i].carrier_name,
-          hiosIssuerId: plansArray[i].hios_issuer_id,
-          planName: plansArray[i].name
+      for (var i = 0; i < plansResponse.length; i++) {
+        plansArray.push ({
+          carrierName: plansResponse[i].carrier_name,
+          hiosIssuerId: plansResponse[i].hios_issuer_id,
+          planName: plansResponse[i].name
         });
       };
-      // carriers is now an array of objects
+      // plansArray is now an array of objects
+      console.log(plansArray);
 
-      var plansByCarrier = _.groupBy(carriers, function(n){
-        return n.carrierName;
-      });
+      return plansArray;
 
-      //plansByCarrier is now an object of carriers/plans
-      console.log(plansByCarrier);
-
-      return plansByCarrier;
     }).catch(function(err){
       console.log(err);
     });
