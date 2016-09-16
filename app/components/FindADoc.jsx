@@ -12,6 +12,7 @@ var FindADoc = React.createClass({
       searchZip: '',
       fipsCode: '',
       carriersList: '',
+      plansArray: [],
       plansByCarrier: '',
       hiosIssuerId: '',
       plansList: '',
@@ -31,20 +32,15 @@ var FindADoc = React.createClass({
       });
       findPlans.getPlans(searchZip, fipsCode).then(function(plansArray){
 
-
         var plansByCarrier = _.groupBy(plansArray, function(obj){
           return obj.carrierName;
         });
 
         console.log(plansByCarrier);
 
-        //plansByCarrier is now an object of carriers/plans
-        var carriersList = [];
+        var carriersList = Object.keys(plansByCarrier);
+        console.log(carriersList);
 
-        _.forEach(plansByCarrier, function(value, key){
-          carriersList.push(key);
-        });
-        console.log("Carriers List: " + carriersList);
 
         that.setState({
           plansByCarrier: plansByCarrier,
@@ -59,8 +55,17 @@ var FindADoc = React.createClass({
     });
 
   },
+  handleChooseCarrier: function(){
+    var {plansArray} = this.state;
+    var plans = plansArray.filter((plan) => {
+      if(plan.carrierName === this.refs.selectCarrier){
+        console.log(plan);
+      }
+      else{console.log(plan);}
+    });
+  },
   render: function() {
-    var {searchZip, fipsCode, carriersList, inputVisible} = this.state;
+    var {searchZip, fipsCode, carriersList, plansArray, inputVisible, plansByCarrier} = this.state;
 
     var renderList = function(array){
       return (
@@ -70,18 +75,18 @@ var FindADoc = React.createClass({
       );
     };
 
-
-
-
     return (
       <div>
         <div className='row'>
           <div className='columns small-11 medium-6 large-4 small-centered'>
             <h3 className='page-title'>Find A Doctor</h3>
             <FindADocForm onSearchZip={this.handleSearchZip} />
-            <select>
+            <label>2. Choose Your Insurance Carrier</label>
+            <select onChange={this.handleChooseCarrier} ref="selectCarrier">
               {renderList(carriersList)}
             </select>
+            <label>3. Choose Your Insurance Plan</label>
+
           </div>
         </div>
       </div>
