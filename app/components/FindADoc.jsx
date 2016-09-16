@@ -21,16 +21,14 @@ var FindADoc = React.createClass({
   },
   handleSearchZip: function (searchZip) {
     var that = this;
-    this.setState({
+    // Unneccessary here, gets set as a result of the 
+/*    this.setState({
       searchZip: searchZip
-    });
-    findFips.getFipsCode(searchZip).then(function(fipsCode){
-      that.setState({
-        searchZip: searchZip,
-        fipsCode: fipsCode,
-        inputVisible: true
-      });
-      findPlans.getPlans(searchZip, fipsCode).then(function(plansArray){
+    });*/
+
+    findFips.getZipFipsCode(searchZip).then(function(resp){
+
+      findPlans.getPlans(resp.zip_code, resp.fips_code).then(function(plansArray){
 
         var plansByCarrier = _.groupBy(plansArray, function(obj){
           return obj.carrierName;
@@ -41,8 +39,10 @@ var FindADoc = React.createClass({
         var carriersList = Object.keys(plansByCarrier);
         console.log(carriersList);
 
-
+        // Set state to start the render
         that.setState({
+          searchZip: resp.zip_code,
+          fipsCode: resp.fips_code,
           plansByCarrier: plansByCarrier,
           carriersList: carriersList,
           inputVisible: true
