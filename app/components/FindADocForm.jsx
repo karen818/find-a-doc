@@ -17,6 +17,7 @@ var FindADocForm = React.createClass({
 
     if(zippo.validate(searchZip)){
       this.refs.searchZip.value = '';
+      console.log("cleared field")
       this.props.onSearchZip(searchZip);
     } else {
       this.refs.searchZip.focus();

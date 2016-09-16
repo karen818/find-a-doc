@@ -20,15 +20,19 @@ var FindADoc = React.createClass({
     }
   },
   handleSearchZip: function (searchZip) {
+    //e.preventDefault();
+    console.log ("in the search")
     var that = this;
     // Unneccessary here, gets set as a result of the 
-/*    this.setState({
+   this.setState({
       searchZip: searchZip
-    });*/
+    });
 
     findFips.getZipFipsCode(searchZip).then(function(resp){
+    console.log ("in the zip")
 
       findPlans.getPlans(resp.zip_code, resp.fips_code).then(function(plansArray){
+    console.log ("in the plans")
 
         var plansByCarrier = _.groupBy(plansArray, function(obj){
           return obj.carrierName;
@@ -49,6 +53,7 @@ var FindADoc = React.createClass({
         });
       });
     }, function(e){
+      console.log("error bruh")
       that.setState({
         errorMessage: e.message
       });
