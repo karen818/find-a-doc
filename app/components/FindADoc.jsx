@@ -16,32 +16,29 @@ var FindADoc = React.createClass({
       plansByCarrier: '',
       hiosIssuerId: '',
       plansList: '',
-      inputVisible: false
+      carrierSelectVisible: false,
+      planSelectVisible: false
     }
   },
   handleSearchZip: function (searchZip) {
-    //e.preventDefault();
-    console.log ("in the search")
     var that = this;
-    // Unneccessary here, gets set as a result of the 
-   this.setState({
-      searchZip: searchZip
-    });
+    // Unneccessary here, will make the next field visible before we're ready
+    // Would be a good place for a waiting spinner to start, though
+    /*   this.setState({
+          searchZip: searchZip
+        });*/
 
-    findFips.getZipFipsCode(searchZip).then(function(resp){
-    console.log ("in the zip")
+    findFips.getZipFipsCode(searchZip).then(function (resp) {
 
-      findPlans.getPlans(resp.zip_code, resp.fips_code).then(function(plansArray){
-    console.log ("in the plans")
+      findPlans.getPlans(resp.zip_code, resp.fips_code).then(function (plansArray) {
 
-        var plansByCarrier = _.groupBy(plansArray, function(obj){
+        var plansByCarrier = _.groupBy(plansArray, function (obj) {
           return obj.carrierName;
         });
-
-        console.log(plansByCarrier);
+        //console.log(plansByCarrier);
 
         var carriersList = Object.keys(plansByCarrier);
-        console.log(carriersList);
+        //console.log(carriersList);
 
         // Set state to start the render
         that.setState({
@@ -49,33 +46,39 @@ var FindADoc = React.createClass({
           fipsCode: resp.fips_code,
           plansByCarrier: plansByCarrier,
           carriersList: carriersList,
-          inputVisible: true
+          carrierSelectVisible: true
         });
       });
-    }, function(e){
-      console.log("error bruh")
+    }, function (e) {
+      console.log("error", e)
       that.setState({
         errorMessage: e.message
       });
     });
 
   },
-  handleChooseCarrier: function(){
-    var {plansArray} = this.state;
-    var plans = plansArray.filter((plan) => {
-      if(plan.carrierName === this.refs.selectCarrier){
-        console.log(plan);
-      }
-      else{console.log(plan);}
-    });
-  },
-  render: function() {
-    var {searchZip, fipsCode, carriersList, plansArray, inputVisible, plansByCarrier} = this.state;
+  // The event here will tell us which option was selected
+  handleChooseCarrier: function (event) {
+    var that = this;
+    var id = event.nativeEvent.target.selectedIndex;
+    // An array of the plan objects
+    var plansList = that.state.plansByCarrier[event.nativeEvent.target[id].text]
+    // transform into an array of the planNames
+    plansList = plansList.map(plan => plan.planName)
 
-    var renderList = function(array){
+    // Start the render of the plan dropdown
+    that.setState({
+      planSelectVisible: true,
+      plansList: plansList
+    })
+  },
+  render: function () {
+    var {searchZip, fipsCode, carriersList, plansList, inputVisible} = this.state;
+
+    var renderList = function (array) {
       return (
-        _.map(array, function(item){
-          return <option>{item}</option>;
+        _.map(array, function (item) {
+          return <option key={item}>{item}</option>;
         })
       );
     };
@@ -86,12 +89,14 @@ var FindADoc = React.createClass({
           <div className='columns small-11 medium-6 large-4 small-centered'>
             <h3 className='page-title'>Find A Doctor</h3>
             <FindADocForm onSearchZip={this.handleSearchZip} />
-            <label>2. Choose Your Insurance Carrier</label>
-            <select onChange={this.handleChooseCarrier} ref="selectCarrier">
-              {renderList(carriersList)}
-            </select>
-            <label>3. Choose Your Insurance Plan</label>
-
+            <label>2. Choose Your Insurance Carrier
+              <select onChange={this.handleChooseCarrier} ref="selectCarrier">
+                {renderList(carriersList) }
+              </select></label>
+            <label>3. Choose Your Insurance Plan
+              <select onChange='' ref="selectCarrier">
+                {renderList(plansList) }
+              </select></label>
           </div>
         </div>
       </div>
