@@ -27,9 +27,7 @@ module.exports = {
           planName: plansResponse[i].name
         });
       };
-      // plansArray is now an array of objects
-      // console.log(plansArray);
-
+      console.log(plansArray);
       return plansArray;
 
     }).catch(function (err) {

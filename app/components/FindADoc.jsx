@@ -16,6 +16,7 @@ var FindADoc = React.createClass({
       plansByCarrier: '',
       hiosIssuerId: '',
       plansList: '',
+      providersList: '',
       carrierSelectVisible: false,
       planSelectVisible: false
     }
@@ -35,10 +36,8 @@ var FindADoc = React.createClass({
         var plansByCarrier = _.groupBy(plansArray, function (obj) {
           return obj.carrierName;
         });
-        //console.log(plansByCarrier);
 
         var carriersList = Object.keys(plansByCarrier);
-        //console.log(carriersList);
 
         // Set state to start the render
         that.setState({
@@ -72,13 +71,29 @@ var FindADoc = React.createClass({
       plansList: plansList
     })
   },
+  handleProvidersList: function(event){
+    var that = this;
+    var providersList = [1, 2, 3]
+
+    that.setState ({
+      providersList: providersList
+    });
+  },
   render: function () {
-    var {searchZip, fipsCode, carriersList, plansList, inputVisible} = this.state;
+    var {searchZip, fipsCode, carriersList, plansList, providersList, inputVisible} = this.state;
+
+    var renderDropdownList = function (array) {
+      return (
+        _.map(array, function (item) {
+          return <option key={item}>{item}</option>;
+        })
+      );
+    };
 
     var renderList = function (array) {
       return (
         _.map(array, function (item) {
-          return <option key={item}>{item}</option>;
+          return <li key={item}>{item}</li>;
         })
       );
     };
@@ -91,12 +106,18 @@ var FindADoc = React.createClass({
             <FindADocForm onSearchZip={this.handleSearchZip} />
             <label>2. Choose Your Insurance Carrier
               <select onChange={this.handleChooseCarrier} ref="selectCarrier">
-                {renderList(carriersList) }
+                <option>Select Carrier...</option>
+                {renderDropdownList(carriersList) }
               </select></label>
             <label>3. Choose Your Insurance Plan
-              <select onChange='' ref="selectCarrier">
-                {renderList(plansList) }
+              <select onChange={this.handleChooseCarrier} ref="selectCarrier">
+                <option>Select Plan...</option>
+                {renderDropdownList(plansList) }
               </select></label>
+            <button className="button expanded" onClick={this.handleProvidersList}>Search For Doctors</button>
+            <ul>
+              {renderList(providersList) }
+            </ul>
           </div>
         </div>
       </div>
