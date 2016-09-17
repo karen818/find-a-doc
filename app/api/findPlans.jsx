@@ -23,6 +23,7 @@ module.exports = {
         plansArray.push({
           carrierName: plansResponse[i].carrier_name,
           hiosIssuerId: plansResponse[i].hios_issuer_id,
+          hiosPlanId: plansResponse[i].id, // This needs to be passed to the provider search
           planName: plansResponse[i].name
         });
       };
