@@ -84,38 +84,38 @@ var FindADoc = React.createClass({
       plansList: plansList
     })
   },
-  handleProvidersList: function(searchZip, hiosPlanIdsArray){
+  handleProvidersList: function (searchZip, hiosPlanIdsArray) {
     var that = this;
     var {searchZip, hiosPlanIdsArray} = this.state;
 
-    findProviders.getProviders(searchZip, hiosPlanIdsArray).then(function(providersList){
+    findProviders.getProviders(searchZip, hiosPlanIdsArray).then(function (providersList) {
 
       var providers = [];
       for (var i = 0; i < providersList.length; i++) {
-          if(providersList[i].providerStreet2 === null){
-            providers.push(
-              providersList[i].providerName + " - " +
-              providersList[i].providerSpecialty + " - " +
-              providersList[i].providerStreet1 + ", " +
-              providersList[i].providerCity
+        if (providersList[i].providerStreet2 === null) {
+          providers.push(
+            providersList[i].providerName + " - " +
+            providersList[i].providerSpecialty + " - " +
+            providersList[i].providerStreet1 + ", " +
+            providersList[i].providerCity
           );
-          } else {
-            providers.push(
-              providersList[i].providerName + " - " +
-              providersList[i].providerSpecialty + " - " +
-              providersList[i].providerStreet1 + ", " +
-              providersList[i].providerStreet2 + ", " +
-              providersList[i].providerCity
+        } else {
+          providers.push(
+            providersList[i].providerName + " - " +
+            providersList[i].providerSpecialty + " - " +
+            providersList[i].providerStreet1 + ", " +
+            providersList[i].providerStreet2 + ", " +
+            providersList[i].providerCity
           );
-          }
+        }
       }
 
-      that.setState ({
+      that.setState({
         hiosPlanIdsArray: hiosPlanIdsArray,
         providersList: providersList,
         providers: providers
       });
-    }, function(e){
+    }, function (e) {
       console.log("error", e)
       that.setState({
         errorMessage: e.message
@@ -137,16 +137,32 @@ var FindADoc = React.createClass({
       return (
         _.map(array, function (item) {
           return <li key={item} className="renderedList callout">{item}</li>
-          ;
+            ;
         })
       );
     };
 
+    var renderProviderList = (providers) => {
+      if (providers.length === 0) {
+        return (
+          <ul>
+            <li className="renderedList callout">This is where your providers will be displayed.</li>
+          </ul>)
+      }
+      else {
+        return (
+          <ul>
+            {renderList(providers) }
+          </ul>)
+      }
+
+    }
+
     return (
-      <div>
-        <div className='row'>
-          <div className='columns small-11 medium-6 large-6 small-centered'>
-            <h3 className='page-title'>Find A Doctor</h3>
+      <div className='khShop'>
+        <div className='khInputPanel'>
+          <div className='khInputSection'>
+            <h1 className='page-title'>Find A Doctor</h1>
             <FindADocForm onSearchZip={this.handleSearchZip} />
             <label>2. Choose Your Insurance Carrier
               <select onChange={this.handleChooseCarrier} ref="selectCarrier">
@@ -161,14 +177,16 @@ var FindADoc = React.createClass({
             <button className="button expanded" onClick={this.handleProvidersList}>Search For Doctors</button>
 
           </div>
-          <div className='row'>
-            <div className='columns small-11 medium-6 large-6 small-centered'>
-              <ul>
-                {renderList(providers)}
-              </ul>
-            </div>
+        </div>
+
+        <div className='khProviderPanel'>
+        <div className='khProviderSection'>
+          <h1 className='page-title'>List of Providers</h1>
+          <div className='planBuffer'><br/></div>
+          {renderProviderList(providers) }
           </div>
         </div>
+
       </div>
     );
   }
