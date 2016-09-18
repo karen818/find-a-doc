@@ -1,5 +1,6 @@
 var axios = require('axios');
 var FindADocForm = require('FindADocForm');
+var FindADoc = require('FindADoc');
 var findPlans = require('findPlans');
 var _ = require('lodash');
 
@@ -8,10 +9,10 @@ const KIND_HEALTH_GETPLANS_URL = 'http://api.kindhealth.co/findProviders/';
 const MARKET = "individual";
 
 module.exports = {
-  getProviders: function (searchZip, hiosPlanIdsArray) {
+  getProviders: function (zip, array) {
     return axios.post(KIND_HEALTH_GETPLANS_URL, {
-      zip_code: '78749',
-      hios_ids: ["29418TX0160005","33602TX0460274"],
+      zip_code: zip,
+      hios_ids: array,
       radius: '10',
       type: MARKET
     }).then(function (res) {

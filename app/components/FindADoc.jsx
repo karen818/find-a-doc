@@ -47,6 +47,7 @@ var FindADoc = React.createClass({
         for (var i = 0; i < plansArray.length; i++) {
           hiosPlanIdsArray.push(plansArray[i].hiosPlanId);
         }
+        console.log(hiosPlanIdsArray);
 
 
         // Set state to start the render
@@ -85,17 +86,28 @@ var FindADoc = React.createClass({
   },
   handleProvidersList: function(searchZip, hiosPlanIdsArray){
     var that = this;
+    var {searchZip, hiosPlanIdsArray} = this.state;
 
     findProviders.getProviders(searchZip, hiosPlanIdsArray).then(function(providersList){
 
       var providers = [];
       for (var i = 0; i < providersList.length; i++) {
-        providers.push(
-          providersList[i].providerName + " - " +
-          providersList[i].providerStreet1 + ", " +
-          providersList[i].providerCity + " - " +
-          providersList[i].providerSpecialty
-        );
+          if(providersList[i].providerStreet2 === null){
+            providers.push(
+              providersList[i].providerName + " - " +
+              providersList[i].providerSpecialty + " - " +
+              providersList[i].providerStreet1 + ", " +
+              providersList[i].providerCity
+          );
+          } else {
+            providers.push(
+              providersList[i].providerName + " - " +
+              providersList[i].providerSpecialty + " - " +
+              providersList[i].providerStreet1 + ", " +
+              providersList[i].providerStreet2 + ", " +
+              providersList[i].providerCity
+          );
+          }
       }
 
       that.setState ({
@@ -133,7 +145,7 @@ var FindADoc = React.createClass({
     return (
       <div>
         <div className='row'>
-          <div className='columns small-11 medium-6 large-7 small-centered'>
+          <div className='columns small-11 medium-6 large-6 small-centered'>
             <h3 className='page-title'>Find A Doctor</h3>
             <FindADocForm onSearchZip={this.handleSearchZip} />
             <label>2. Choose Your Insurance Carrier
@@ -150,7 +162,7 @@ var FindADoc = React.createClass({
 
           </div>
           <div className='row'>
-            <div className='columns small-11 medium-8 large-7 small-centered'>
+            <div className='columns small-11 medium-6 large-6 small-centered'>
               <ul>
                 {renderList(providers)}
               </ul>
