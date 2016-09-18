@@ -5,3 +5,6 @@
 @import "base/foundation-settings";
 @import "foundation";
 @include foundation-everything;
+
+//components
+@import "components/list";

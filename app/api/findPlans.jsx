@@ -27,7 +27,6 @@ module.exports = {
           planName: plansResponse[i].name
         });
       };
-      console.log(plansArray);
       return plansArray;
 
     }).catch(function (err) {
