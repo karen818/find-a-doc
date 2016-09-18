@@ -1,10 +1,9 @@
 /* Coolors Exported Palette - coolors.co/e3d8f1-dabeca-bf8b85-666666-f2e2d2 */
-.khProviderCardPlaceholder {
+li.khProviderCardPlaceholder  {
   border: 1px dashed #666666;
-  margin: 10px;
-  padding: 50px;
-  height: 50px;
-  text-align: center; }
+  text-align: center;
+
+  }
 
 .khProviderCard {
   border: 1px solid #666666;
