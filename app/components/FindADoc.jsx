@@ -23,8 +23,7 @@ var FindADoc = React.createClass({
       plansList: '',
       providersList: '',
       providers: '',
-      carrierSelectVisible: false,
-      planSelectVisible: false
+      disabled: true
     }
   },
   handleSearchZip: function (searchZip) {
@@ -54,7 +53,7 @@ var FindADoc = React.createClass({
           fipsCode: resp.fips_code,
           plansByCarrier: plansByCarrier,
           carriersList: carriersList,
-          carrierSelectVisible: true
+          disabled: false
         });
       });
     }, function (e) {
@@ -79,7 +78,8 @@ var FindADoc = React.createClass({
     // Start the render of the plan dropdown
     that.setState({
       planSelectVisible: true,
-      plansList: plansList
+      plansList: plansList,
+      disabled: false
     })
   },
   handleProvidersList: function (event) {
@@ -87,8 +87,8 @@ var FindADoc = React.createClass({
     var {searchZip} = this.state;
 
     var id = event.nativeEvent.target.selectedIndex;
-    var hiosPlanId = event.nativeEvent.target[id].value
-    hiosPlanId = [hiosPlanId] // format into an array for API
+    var hiosPlanId = event.nativeEvent.target[id].value;
+    hiosPlanId = [hiosPlanId]; // format into an array for API
 
     findProviders.getProviders(searchZip, hiosPlanId).then(function (providersList) {
 
@@ -125,8 +125,13 @@ var FindADoc = React.createClass({
       });
     });
   },
+  handleFilterProviders: function (searchText) {
+  this.setState({
+    searchText: searchText.toLowerCase()
+  });
+},
   render: function () {
-    var {searchZip, fipsCode, carriersList, plansList, providersList, providers, inputVisible} = this.state;
+    var {searchZip, fipsCode, carriersList, plansList, providersList, providers, inputVisible, searchText, disabled} = this.state;
 
     var renderCarrierDropdown = function (array) {
       return (
@@ -158,19 +163,28 @@ var FindADoc = React.createClass({
     var renderProviderList = (providers) => {
       if (providers.length === 0) {
         return (
-          <ul>
-            <li className="renderedList callout khProviderCardPlaceholder">This is where your providers will be displayed.</li>
-            <li className="renderedList callout khProviderCardPlaceholder">:</li>
-            <li className="renderedList callout khProviderCardPlaceholder">:</li>
+          <div>
+            <ul>
+              <li className="renderedList callout khProviderCardPlaceholder">This is where your providers will be displayed.</li>
+              <li className="renderedList callout khProviderCardPlaceholder">:</li>
+              <li className="renderedList callout khProviderCardPlaceholder">:</li>
 
 
-          </ul>)
+            </ul>
+
+          </div>
+        )
       }
       else {
         return (
-          <ul>
-            {renderList(providers) }
-          </ul>)
+          <div>
+            <ul>
+              {renderList(providers) }
+            </ul>
+            <ProviderFilter onSearch={this.handleFilterProviders}/>
+            <ProvidersList providers={providers} />
+          </div>
+        )
       }
 
     }
@@ -182,12 +196,12 @@ var FindADoc = React.createClass({
             <h1 className='page-title'>Find A Doctor</h1>
             <FindADocForm onSearchZip={this.handleSearchZip} />
             <label>2. Choose Your Insurance Carrier
-              <select onChange={this.handleChooseCarrier} ref="selectCarrier" className="" disabled>
+              <select onChange={this.handleChooseCarrier} ref="selectCarrier" disabled={disabled}>
                 <option>Select Carrier...</option>
                 {renderCarrierDropdown(carriersList) }
               </select></label>
             <label>3. Choose Your Insurance Plan
-              <select onChange={this.handleProvidersList} ref="selectCarrier" disabled>
+              <select onChange={this.handleProvidersList} ref="selectCarrier" disabled={disabled}>
                 <option>Select Plan...</option>
                 {renderPlanDropdown(plansList) }
               </select></label>
