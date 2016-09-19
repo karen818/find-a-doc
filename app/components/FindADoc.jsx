@@ -23,6 +23,7 @@ var FindADoc = React.createClass({
       plansList: '',
       providersList: '',
       providers: '',
+      searchText: '',
       disabled: true
     }
   },
@@ -95,22 +96,23 @@ var FindADoc = React.createClass({
       var providers = [];
       for (var i = 0; i < providersList.length; i++) {
 
-          if(providersList[i].providerStreet2 !== 'null'){
-            providers.push(
-              providersList[i].providerName + " - " +
-              providersList[i].providerSpecialty + " - " +
-              providersList[i].providerStreet1 + ", " +
-              providersList[i].providerStreet2 + ", " +
-              providersList[i].providerCity
-          );
-          } else {
-            providers.push(
-              providersList[i].providerName + " - " +
-              providersList[i].providerSpecialty + " - " +
-              providersList[i].providerStreet1 + ", " +
-              providersList[i].providerCity
-
-          );
+        if(providersList[i].providerStreet2 !== 'null'){
+          providers.push({
+            provName: providersList[i].providerName,
+            provSpecialty: providersList[i].providerSpecialty,
+            provStreet1: providersList[i].providerStreet1,
+            provStreet2: providersList[i].providerStreet2,
+            provCity: providersList[i].providerCity,
+            provId: providersList[i].providerId
+          });
+        } else {
+          providers.push({
+            provName: providersList[i].providerName,
+            provSpecialty: providersList[i].providerSpecialty,
+            provStreet1: providersList[i].providerStreet1,
+            provCity: providersList[i].providerCity,
+            provId: providersList[i].providerId
+          });
         }
       }
 
@@ -152,7 +154,6 @@ var FindADoc = React.createClass({
     var renderList = function (array) {
       return (
         _.map(array, function (item) {
-
           return <li key={item} className="renderedList callout">{item}</li>
             ;
 
@@ -166,10 +167,6 @@ var FindADoc = React.createClass({
           <div>
             <ul>
               <li className="renderedList callout khProviderCardPlaceholder">This is where your providers will be displayed.</li>
-              <li className="renderedList callout khProviderCardPlaceholder">:</li>
-              <li className="renderedList callout khProviderCardPlaceholder">:</li>
-
-
             </ul>
 
           </div>
@@ -178,10 +175,8 @@ var FindADoc = React.createClass({
       else {
         return (
           <div>
-            <ul>
-              {renderList(providers) }
-            </ul>
             <ProviderFilter onSearch={this.handleFilterProviders}/>
+
             <ProvidersList providers={providers} />
           </div>
         )

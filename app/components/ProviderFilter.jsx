@@ -10,7 +10,7 @@ var ProviderFilter = React.createClass({
     return (
       <div>
         <div>
-          <input type="search" ref="searchText" placeholder="Search Providers" onChange={this.handleSearch}/>
+          <input type="search" ref="searchText" placeholder="Search for name or specialty" onChange={this.handleSearch}/>
         </div>
       </div>
     )

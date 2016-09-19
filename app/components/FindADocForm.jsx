@@ -3,9 +3,6 @@ var zippo = require('zippo');
 
 var ZipSearchMessage = require('ZipSearchMessage');
 
-// var GetProvidersList = require('GetProvidersList');
-var GetCarriersAndPlans = require('GetCarriersAndPlans');
-
 var findPlans = require('findPlans');
 
 
