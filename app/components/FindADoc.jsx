@@ -1,10 +1,14 @@
 var React = require('react');
+var _ = require('lodash');
+
 var FindADocForm = require('FindADocForm');
 var ZipSearchMessage = require('ZipSearchMessage');
 var findFips = require('findFips');
 var findPlans = require('findPlans');
 var findProviders = require('findProviders');
-var _ = require('lodash');
+var ProvidersList = require('ProvidersList');
+var ProviderFilter = require('ProviderFilter');
+
 // var GetCarriersAndPlans = require('GetCarriersAndPlans');
 
 var FindADoc = React.createClass({
@@ -72,8 +76,6 @@ var FindADoc = React.createClass({
     plansList = plansList.map(plan => {
      return {name:plan.planName, id:plan.hiosPlanId}
     })
-
-    console.log(plansList)
     // Start the render of the plan dropdown
     that.setState({
       planSelectVisible: true,
@@ -180,18 +182,16 @@ var FindADoc = React.createClass({
             <h1 className='page-title'>Find A Doctor</h1>
             <FindADocForm onSearchZip={this.handleSearchZip} />
             <label>2. Choose Your Insurance Carrier
-              <select onChange={this.handleChooseCarrier} ref="selectCarrier">
+              <select onChange={this.handleChooseCarrier} ref="selectCarrier" className="" disabled>
                 <option>Select Carrier...</option>
                 {renderCarrierDropdown(carriersList) }
               </select></label>
             <label>3. Choose Your Insurance Plan
-              <select onChange={this.handleProvidersList} ref="selectCarrier">
+              <select onChange={this.handleProvidersList} ref="selectCarrier" disabled>
                 <option>Select Plan...</option>
                 {renderPlanDropdown(plansList) }
               </select></label>
-            {/* Don't think we need a button here, can just work when they select a plan
-               <button className="button expanded" onClick={this.handleProvidersList}>Search For Doctors</button>
-              */}
+
           </div>
         </div>
 

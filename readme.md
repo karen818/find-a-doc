@@ -1,1 +1,1 @@
-Find A Doctor Application for Kind Health
+Find A Doctor Application for KindHealth

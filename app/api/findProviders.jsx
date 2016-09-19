@@ -13,7 +13,7 @@ module.exports = {
     return axios.post(KIND_HEALTH_GETPLANS_URL, {
       zip_code: zip,
       hios_ids: array,
-      radius: '10',
+      radius: '15',
       type: MARKET
     }).then(function (res) {
 
