@@ -1,0 +1,33 @@
+/* Coolors Exported Palette - coolors.co/e3d8f1-dabeca-bf8b85-666666-f2e2d2 */
+li.khProviderCardPlaceholder  {
+  border: 1px dashed #666666;
+  text-align: center;
+
+  }
+
+.khProviderCard {
+  border: 1px solid #666666;
+  margin: 10px; }
+
+.khProviderPanel {
+  width: 50%;
+  margin: 20px; }
+
+.khInputCard {
+  margin: 10px;
+  padding: 10px; }
+
+.khInputPanel {
+  width: 50%;
+  margin: 20px; }
+
+
+.khShop {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  padding: 10px;
+  margin: 0; }
+
+/*# sourceMappingURL=kh_shop.css.map */
