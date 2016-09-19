@@ -1,0 +1,44 @@
+
+.khPlanCardPlaceholder {
+  border: 1px dashed $color4;
+  margin: 10px;
+  padding: 50px;
+  height: 50px;
+  text-align: center;
+}
+
+.khPlanCard {
+  border: 1px solid $color4;
+  margin: 10px;
+  padding: 10px;
+}
+
+.khPlanPanel {
+  width: 50%;
+  margin: 20px;
+}
+
+.khPlanSection {
+}
+
+.khQuestionCard {
+  margin: 10px;
+  padding: 10px;
+}
+
+.khQuestionPanel {
+  width: 50%;
+  margin: 20px;
+}
+
+.khQuestionSection {
+}
+
+.khShop {
+  display: flex;
+  flex-direction: row;
+  justify-content: center; //space-around;
+  width: 100%;
+  padding: 10px;
+  margin:0;
+}

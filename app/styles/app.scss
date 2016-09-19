@@ -1,5 +1,6 @@
 //no underscore, no file extention
 @import "base/variables";
+@import "base/base";
 
 //Foundation
 @import "base/foundation-settings";
@@ -8,3 +9,4 @@
 
 //components
 @import "components/list";
+@import "components/kh_shop";

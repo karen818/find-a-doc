@@ -92,11 +92,12 @@ var FindADoc = React.createClass({
 
       var providers = [];
       for (var i = 0; i < providersList.length; i++) {
-          if(providersList[i].providerStreet2 === null){
+          if(providersList[i].providerStreet2 !== 'null'){
             providers.push(
               providersList[i].providerName + " - " +
               providersList[i].providerSpecialty + " - " +
               providersList[i].providerStreet1 + ", " +
+              providersList[i].providerStreet2 + ", " +
               providersList[i].providerCity
           );
           } else {
@@ -104,7 +105,6 @@ var FindADoc = React.createClass({
               providersList[i].providerName + " - " +
               providersList[i].providerSpecialty + " - " +
               providersList[i].providerStreet1 + ", " +
-              providersList[i].providerStreet2 + ", " +
               providersList[i].providerCity
           );
           }
@@ -136,7 +136,7 @@ var FindADoc = React.createClass({
     var renderList = function (array) {
       return (
         _.map(array, function (item) {
-          return <li key={item} className="renderedList callout">{item}</li>
+          return <li key={item} className="renderedList khPlanCard">{item}</li>
           ;
         })
       );
