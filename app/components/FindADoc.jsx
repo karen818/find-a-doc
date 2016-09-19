@@ -15,7 +15,6 @@ var FindADoc = React.createClass({
       carriersList: '',
       plansArray: [],
       plansByCarrier: '',
-      hiosPlanIdsArray: '',
       hiosIssuerId: '',
       plansList: '',
       providersList: '',
@@ -42,19 +41,13 @@ var FindADoc = React.createClass({
 
         var carriersList = Object.keys(plansByCarrier);
 
-        var hiosPlanIdsArray = [];
-
-        for (var i = 0; i < plansArray.length; i++) {
-          hiosPlanIdsArray.push(plansArray[i].hiosPlanId);
-        }
-        console.log(hiosPlanIdsArray);
+        //console.log(plansByCarrier);
 
 
         // Set state to start the render
         that.setState({
           searchZip: resp.zip_code,
           fipsCode: resp.fips_code,
-          hiosPlanIdsArray: hiosPlanIdsArray,
           plansByCarrier: plansByCarrier,
           carriersList: carriersList,
           carrierSelectVisible: true
@@ -75,23 +68,31 @@ var FindADoc = React.createClass({
     // An array of the plan objects
     var plansList = that.state.plansByCarrier[event.nativeEvent.target[id].text];
 
-    // transform into an array of the planNames
-    plansList = plansList.map(plan => plan.planName)
+    // transform into an array of obj {name:planName, id:hiosPlanId}
+    plansList = plansList.map(plan => {
+     return {name:plan.planName, id:plan.hiosPlanId}
+    })
 
+    console.log(plansList)
     // Start the render of the plan dropdown
     that.setState({
       planSelectVisible: true,
       plansList: plansList
     })
   },
-  handleProvidersList: function(searchZip, hiosPlanIdsArray){
+  handleProvidersList: function (event) {
     var that = this;
-    var {searchZip, hiosPlanIdsArray} = this.state;
+    var {searchZip} = this.state;
 
-    findProviders.getProviders(searchZip, hiosPlanIdsArray).then(function(providersList){
+    var id = event.nativeEvent.target.selectedIndex;
+    var hiosPlanId = event.nativeEvent.target[id].value
+    hiosPlanId = [hiosPlanId] // format into an array for API
+
+    findProviders.getProviders(searchZip, hiosPlanId).then(function (providersList) {
 
       var providers = [];
       for (var i = 0; i < providersList.length; i++) {
+
           if(providersList[i].providerStreet2 !== 'null'){
             providers.push(
               providersList[i].providerName + " - " +
@@ -106,16 +107,16 @@ var FindADoc = React.createClass({
               providersList[i].providerSpecialty + " - " +
               providersList[i].providerStreet1 + ", " +
               providersList[i].providerCity
+
           );
-          }
+        }
       }
 
-      that.setState ({
-        hiosPlanIdsArray: hiosPlanIdsArray,
+      that.setState({
         providersList: providersList,
         providers: providers
       });
-    }, function(e){
+    }, function (e) {
       console.log("error", e)
       that.setState({
         errorMessage: e.message
@@ -125,7 +126,7 @@ var FindADoc = React.createClass({
   render: function () {
     var {searchZip, fipsCode, carriersList, plansList, providersList, providers, inputVisible} = this.state;
 
-    var renderDropdownList = function (array) {
+    var renderCarrierDropdown = function (array) {
       return (
         _.map(array, function (item) {
           return <option key={item}>{item}</option>;
@@ -133,42 +134,75 @@ var FindADoc = React.createClass({
       );
     };
 
-    var renderList = function (array) {
+    var renderPlanDropdown = function (array) {
       return (
         _.map(array, function (item) {
-          return <li key={item} className="renderedList khPlanCard">{item}</li>
-          ;
+          return <option key={item.name} value={item.id}>{item.name}</option>;
         })
       );
     };
 
+    var renderList = function (array) {
+      return (
+        _.map(array, function (item) {
+
+          return <li key={item} className="renderedList callout">{item}</li>
+            ;
+
+        })
+      );
+    };
+
+    var renderProviderList = (providers) => {
+      if (providers.length === 0) {
+        return (
+          <ul>
+            <li className="renderedList callout khProviderCardPlaceholder">This is where your providers will be displayed.</li>
+            <li className="renderedList callout khProviderCardPlaceholder">:</li>
+            <li className="renderedList callout khProviderCardPlaceholder">:</li>
+
+
+          </ul>)
+      }
+      else {
+        return (
+          <ul>
+            {renderList(providers) }
+          </ul>)
+      }
+
+    }
+
     return (
-      <div>
-        <div className='row'>
-          <div className='columns small-11 medium-6 large-6 small-centered'>
-            <h3 className='page-title'>Find A Doctor</h3>
+      <div className='khShop'>
+        <div className='khInputPanel'>
+          <div className='khInputSection'>
+            <h1 className='page-title'>Find A Doctor</h1>
             <FindADocForm onSearchZip={this.handleSearchZip} />
             <label>2. Choose Your Insurance Carrier
               <select onChange={this.handleChooseCarrier} ref="selectCarrier">
                 <option>Select Carrier...</option>
-                {renderDropdownList(carriersList) }
+                {renderCarrierDropdown(carriersList) }
               </select></label>
             <label>3. Choose Your Insurance Plan
-              <select onChange={this.handleChooseCarrier} ref="selectCarrier">
+              <select onChange={this.handleProvidersList} ref="selectCarrier">
                 <option>Select Plan...</option>
-                {renderDropdownList(plansList) }
+                {renderPlanDropdown(plansList) }
               </select></label>
-            <button className="button expanded" onClick={this.handleProvidersList}>Search For Doctors</button>
-
-          </div>
-          <div className='row'>
-            <div className='columns small-11 medium-6 large-6 small-centered'>
-              <ul>
-                {renderList(providers)}
-              </ul>
-            </div>
+            {/* Don't think we need a button here, can just work when they select a plan
+               <button className="button expanded" onClick={this.handleProvidersList}>Search For Doctors</button>
+              */}
           </div>
         </div>
+
+        <div className='khProviderPanel'>
+          <div className='khProviderSection'>
+            <h1 className='page-title'>List of Providers</h1>
+            <div className='planBuffer'><br/></div>
+            {renderProviderList(providers) }
+          </div>
+        </div>
+
       </div>
     );
   }
