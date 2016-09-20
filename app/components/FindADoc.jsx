@@ -24,7 +24,8 @@ var FindADoc = React.createClass({
       providersList: '',
       providers: '',
       searchText: '',
-      disabled: true
+      disabled: true,
+      disabled2: true
     }
   },
   handleSearchZip: function (searchZip) {
@@ -80,7 +81,7 @@ var FindADoc = React.createClass({
     that.setState({
       planSelectVisible: true,
       plansList: plansList,
-      disabled: false
+      disabled2: false
     })
   },
   handleProvidersList: function (event) {
@@ -133,7 +134,7 @@ var FindADoc = React.createClass({
     });
   },
   render: function () {
-    var {searchZip, fipsCode, carriersList, plansList, providersList, providers, inputVisible, searchText, disabled} = this.state;
+    var {searchZip, fipsCode, carriersList, plansList, providersList, providers,  searchText, disabled, disabled2} = this.state;
 
     var filteredProviders = findProviders.filterProviders(providers, searchText);
 
@@ -187,7 +188,7 @@ var FindADoc = React.createClass({
                 {renderCarrierDropdown(carriersList) }
               </select></label>
             <label>3. Choose Your Insurance Plan
-              <select onChange={this.handleProvidersList} ref="selectCarrier" disabled={disabled}>
+              <select onChange={this.handleProvidersList} ref="selectCarrier" disabled={disabled2}>
                 <option>Select Plan...</option>
                 {renderPlanDropdown(plansList) }
               </select></label>

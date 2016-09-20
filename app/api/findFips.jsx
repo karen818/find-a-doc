@@ -12,6 +12,7 @@ module.exports = {
 
       // Some validation on the returned data
       if (!res.data.counties[0].fips_code || !res.data.zip_codes[0].code)
+        
         return new Error("Something went wrong with the zip code")
 
       var resp_data = {
