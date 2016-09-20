@@ -128,12 +128,14 @@ var FindADoc = React.createClass({
     });
   },
   handleFilterProviders: function (searchText) {
-  this.setState({
-    searchText: searchText.toLowerCase()
-  });
-},
+    this.setState({
+      searchText: searchText.toLowerCase()
+    });
+  },
   render: function () {
     var {searchZip, fipsCode, carriersList, plansList, providersList, providers, inputVisible, searchText, disabled} = this.state;
+
+    var filteredProviders = findProviders.filterProviders(providers, searchText);
 
     var renderCarrierDropdown = function (array) {
       return (
@@ -147,16 +149,6 @@ var FindADoc = React.createClass({
       return (
         _.map(array, function (item) {
           return <option key={item.name} value={item.id}>{item.name}</option>;
-        })
-      );
-    };
-
-    var renderList = function (array) {
-      return (
-        _.map(array, function (item) {
-          return <li key={item} className="renderedList callout">{item}</li>
-            ;
-
         })
       );
     };
@@ -176,8 +168,7 @@ var FindADoc = React.createClass({
         return (
           <div>
             <ProviderFilter onSearch={this.handleFilterProviders}/>
-
-            <ProvidersList providers={providers} />
+            <ProvidersList providers={filteredProviders} />
           </div>
         )
       }

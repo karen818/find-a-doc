@@ -50,5 +50,17 @@ module.exports = {
     }).catch(function (err) {
       console.log(err);
     });
+  },
+  filterProviders: function(providersList, searchText){
+    var filteredProviders = Array.from(providersList);
+
+    filteredProviders = filteredProviders.filter((provider) => {
+      var name = provider.provName.toLowerCase();
+      var specialty = provider.provSpecialty.toLowerCase();
+      return searchText.length === 0 || name.indexOf(searchText) > -1 || specialty.indexOf(searchText) > -1;
+    });
+
+    return filteredProviders;
+
   }
 };
