@@ -1,4 +1,28 @@
 
+body {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 400;
+}
+
+h1, h2, h3, h4, h5 {
+  color: $color4;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 600;
+  margin: 0 0 15px;
+  padding: 0;
+}
+
+h1 {
+  border-bottom: 1px solid #ddd;
+  font-size: 2.5em;
+}
+
+h5 {
+  color: white;
+  font-size: 1.4em;
+  border-bottom: 1px solid #eee;
+}
+
 .khPlanCardPlaceholder {
   border: 1px dashed $color4;
   margin: 10px;
@@ -41,4 +65,31 @@
   width: 100%;
   padding: 10px;
   margin:0;
+}
+
+.khProviderCard {
+  background-color: #377696;
+  border: 1px solid $color4;
+  border-radius: 5px;
+  color: white;
+  font-family: 'Raleway', sans-serif;
+  padding: 10px;
+}
+
+.button,
+.button:active,
+.button:hover,
+.button:visited {
+  background-color: #377696;
+  border: 1px solid $color4;
+  border-radius: 5px;
+  color: white;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+input[type=search],
+input[type=number]{
+  box-shadow: none;
 }

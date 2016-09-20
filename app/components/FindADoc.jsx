@@ -46,17 +46,20 @@ var FindADoc = React.createClass({
 
         var carriersList = Object.keys(plansByCarrier);
 
-        //console.log(plansByCarrier);
-
-
         // Set state to start the render
-        that.setState({
-          searchZip: resp.zip_code,
-          fipsCode: resp.fips_code,
-          plansByCarrier: plansByCarrier,
-          carriersList: carriersList,
-          disabled: false
-        });
+        if(plansArray.length > 0){
+          that.setState({
+            searchZip: resp.zip_code,
+            fipsCode: resp.fips_code,
+            plansByCarrier: plansByCarrier,
+            carriersList: carriersList,
+            disabled: false
+          });
+        } else {
+          that.setState({
+            disabled: true
+          });
+        }
       });
     }, function (e) {
       console.log("error", e)
