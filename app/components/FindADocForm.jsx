@@ -1,8 +1,6 @@
 var React = require('react');
 var zippo = require('zippo');
 
-var ZipSearchMessage = require('ZipSearchMessage');
-
 var findPlans = require('findPlans');
 
 

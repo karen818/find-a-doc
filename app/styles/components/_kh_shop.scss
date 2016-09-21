@@ -2,6 +2,7 @@
 body {
   font-family: 'Raleway', sans-serif;
   font-weight: 400;
+  color: $color4;
 }
 
 h1, h2, h3, h4, h5 {
@@ -74,6 +75,11 @@ h5 {
   color: white;
   font-family: 'Raleway', sans-serif;
   padding: 10px;
+}
+
+.khProviderPanel,
+.khInputPanel {
+  margin: 0 5%;
 }
 
 .button,

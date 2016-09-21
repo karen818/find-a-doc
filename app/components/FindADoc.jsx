@@ -2,7 +2,7 @@ var React = require('react');
 var _ = require('lodash');
 
 var FindADocForm = require('FindADocForm');
-var ZipSearchMessage = require('ZipSearchMessage');
+var NoZipMessage = require('NoZipMessage');
 var findFips = require('findFips');
 var findPlans = require('findPlans');
 var findProviders = require('findProviders');
@@ -25,18 +25,19 @@ var FindADoc = React.createClass({
       providers: '',
       searchText: '',
       disabled: true,
-      disabled2: true
+      disabled2: true,
+      errorMessage: '',
+      isLoading: false
     }
   },
   handleSearchZip: function (searchZip) {
     var that = this;
     // Unneccessary here, will make the next field visible before we're ready
     // Would be a good place for a waiting spinner to start, though
-    /*   this.setState({
-          searchZip: searchZip
-        });*/
+
 
     findFips.getZipFipsCode(searchZip).then(function (resp) {
+      that.setState({isLoading: true});
 
       findPlans.getPlans(resp.zip_code, resp.fips_code).then(function (plansArray) {
 
@@ -53,7 +54,8 @@ var FindADoc = React.createClass({
             fipsCode: resp.fips_code,
             plansByCarrier: plansByCarrier,
             carriersList: carriersList,
-            disabled: false
+            disabled: false,
+            isLoading: false
           });
         } else {
           that.setState({
@@ -82,9 +84,9 @@ var FindADoc = React.createClass({
     })
     // Start the render of the plan dropdown
     that.setState({
-      planSelectVisible: true,
       plansList: plansList,
-      disabled2: false
+      disabled2: false,
+      isLoading: false
     })
   },
   handleProvidersList: function (event) {
@@ -137,9 +139,15 @@ var FindADoc = React.createClass({
     });
   },
   render: function () {
-    var {searchZip, fipsCode, carriersList, plansList, providersList, providers,  searchText, disabled, disabled2} = this.state;
+    var {searchZip, fipsCode, carriersList, plansList, providersList, providers, searchText, disabled, disabled2, isLoading} = this.state;
 
     var filteredProviders = findProviders.filterProviders(providers, searchText);
+
+    function renderLoadMsg (){
+      if(isLoading){
+        return <p className='text-center'><i className="fa fa-spinner fa-pulse fa-2x fa-fw"></i></p>
+      }
+    }
 
     var renderCarrierDropdown = function (array) {
       return (
@@ -183,8 +191,9 @@ var FindADoc = React.createClass({
       <div className='khShop'>
         <div className='khInputPanel'>
           <div className='khInputSection'>
-            <h1 className='page-title'>Find A Doctor</h1>
+            <h1>Find A Doctor</h1>
             <FindADocForm onSearchZip={this.handleSearchZip} />
+            {renderLoadMsg()}
             <label>2. Choose Your Insurance Carrier
               <select onChange={this.handleChooseCarrier} ref="selectCarrier" disabled={disabled}>
                 <option>Select Carrier...</option>
@@ -201,7 +210,7 @@ var FindADoc = React.createClass({
 
         <div className='khProviderPanel'>
           <div className='khProviderSection'>
-            <h1 className='page-title'>List of Providers</h1>
+            <h1>List of Providers</h1>
             <div className='planBuffer'><br/></div>
             {renderProviderList(providers) }
           </div>

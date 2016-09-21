@@ -1,6 +1,7 @@
 var axios = require('axios');
 var FindADocForm = require('FindADocForm');
 var findFips = require('findFips');
+
 var _ = require('lodash');
 
 
@@ -30,8 +31,8 @@ module.exports = {
       return plansArray;
 
     }).catch(function (err) {
+      alert('The zip code entered returned no results. Please try again.')
       console.log(err);
-      return alert('Sorry. No results for that zip code. Please try again.');
     });
   }
 };
