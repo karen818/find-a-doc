@@ -27,7 +27,8 @@ var FindADoc = React.createClass({
       disabled: true,
       disabled2: true,
       errorMessage: '',
-      isLoading: false
+      isLoading: false,
+      imgUrl: 'http://www.fillmurray.com/g/100/100'
     }
   },
   handleSearchZip: function (searchZip) {
@@ -40,27 +41,33 @@ var FindADoc = React.createClass({
       that.setState({isLoading: true});
 
       findPlans.getPlans(resp.zip_code, resp.fips_code).then(function (plansArray) {
-
-        var plansByCarrier = _.groupBy(plansArray, function (obj) {
-          return obj.carrierName;
-        });
-
-        var carriersList = Object.keys(plansByCarrier);
-
-        // Set state to start the render
-        if(plansArray.length > 0){
+        if (plansArray === undefined) {
           that.setState({
-            searchZip: resp.zip_code,
-            fipsCode: resp.fips_code,
-            plansByCarrier: plansByCarrier,
-            carriersList: carriersList,
-            disabled: false,
+            errorMessage: "Not found",
             isLoading: false
           });
         } else {
-          that.setState({
-            disabled: true
+          var plansByCarrier = _.groupBy(plansArray, function (obj) {
+            return obj.carrierName;
           });
+
+          var carriersList = Object.keys(plansByCarrier);
+
+          // Set state to start the render
+          if(plansArray.length > 0){
+            that.setState({
+              searchZip: resp.zip_code,
+              fipsCode: resp.fips_code,
+              plansByCarrier: plansByCarrier,
+              carriersList: carriersList,
+              disabled: false,
+              isLoading: false
+            });
+          } else {
+            that.setState({
+              disabled: true
+            });
+          }
         }
       });
     }, function (e) {
@@ -82,6 +89,7 @@ var FindADoc = React.createClass({
     plansList = plansList.map(plan => {
      return {name:plan.planName, id:plan.hiosPlanId}
     })
+
     // Start the render of the plan dropdown
     that.setState({
       plansList: plansList,
@@ -138,8 +146,13 @@ var FindADoc = React.createClass({
       searchText: searchText.toLowerCase()
     });
   },
+  onBlur: function(){
+    this.setState({
+      errorMessage: null
+    })
+  },
   render: function () {
-    var {searchZip, fipsCode, carriersList, plansList, providersList, providers, searchText, disabled, disabled2, isLoading} = this.state;
+    var {searchZip, fipsCode, carriersList, plansList, providersList, providers, searchText, disabled, disabled2, isLoading, errorMessage, imgUrl} = this.state;
 
     var filteredProviders = findProviders.filterProviders(providers, searchText);
 
@@ -147,6 +160,10 @@ var FindADoc = React.createClass({
       if(isLoading){
         return <p className='text-center'><i className="fa fa-spinner fa-pulse fa-2x fa-fw"></i></p>
       }
+    }
+
+    function renderNoZip (){
+      return <NoZipMessage/>
     }
 
     var renderCarrierDropdown = function (array) {
@@ -160,7 +177,7 @@ var FindADoc = React.createClass({
     var renderPlanDropdown = function (array) {
       return (
         _.map(array, function (item) {
-          return <option key={item.name} value={item.id}>{item.name}</option>;
+          return <option key={item.id} value={item.id}>{item.name}</option>;
         })
       );
     };
@@ -191,9 +208,11 @@ var FindADoc = React.createClass({
       <div className='khShop'>
         <div className='khInputPanel'>
           <div className='khInputSection'>
-            <h1>Find A Doctor</h1>
-            <FindADocForm onSearchZip={this.handleSearchZip} />
+
+            <h1>Find A Health Provider</h1>
+            <FindADocForm onSearchZip={this.handleSearchZip} onBlur={this.onBlur}/>
             {renderLoadMsg()}
+            {errorMessage ? renderNoZip(): null}
             <label>2. Choose Your Insurance Carrier
               <select onChange={this.handleChooseCarrier} ref="selectCarrier" disabled={disabled}>
                 <option>Select Carrier...</option>

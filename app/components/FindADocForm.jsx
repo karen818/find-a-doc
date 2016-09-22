@@ -20,12 +20,12 @@ var FindADocForm = React.createClass({
 
   },
   render: function(){
-    var {searchZip, carriersList} = this.props;
+    var {searchZip, carriersList, onBlur} = this.props;
     return(
       <div>
         <form onSubmit={this.handleSubmit} ref="form" className="findadoc-form">
           <label>1. Enter Zip Code</label>
-          <input type='number' ref='searchZip' placeholder='Enter your 5 digit zip code'/>
+          <input type='number' ref='searchZip' onBlur={onBlur} placeholder='Enter your 5 digit zip code'/>
           <button className='button expanded' onClick={this.handleEnterZip}>Enter Zip Code</button>
         </form>
       </div>

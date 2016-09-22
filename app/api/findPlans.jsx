@@ -31,7 +31,7 @@ module.exports = {
       return plansArray;
 
     }).catch(function (err) {
-      alert('The zip code entered returned no results. Please try again.')
+      // alert('The zip code entered returned no results. Please try again.')
       console.log(err);
     });
   }
