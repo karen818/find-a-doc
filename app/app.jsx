@@ -13,6 +13,7 @@ require('style!css!sass!applicationStyles')
 
 ReactDOM.render(
   <div>
+    <img src={'https://cdn.kindhealth.co/wp-content/uploads/2015/08/KND-logo.png'}/>
     <Router history={hashHistory}>
       <Route path='/' component={FindADoc}>
       </Route>

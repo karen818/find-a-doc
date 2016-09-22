@@ -208,8 +208,7 @@ var FindADoc = React.createClass({
       <div className='khShop'>
         <div className='khInputPanel'>
           <div className='khInputSection'>
-
-            <h1>Find A Health Provider</h1>
+            <h1> Find A Health Provider</h1>
             <FindADocForm onSearchZip={this.handleSearchZip} onBlur={this.onBlur}/>
             {renderLoadMsg()}
             {errorMessage ? renderNoZip(): null}
